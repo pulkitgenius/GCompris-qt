@@ -37,9 +37,6 @@ Item {
     flowXPosition: parent.width / 10
     flowYPosition: parent.height / 5
 
-
-    onStart: { Activity.start(items, url, levelCount, answerGlow, displayDropCircle) }
-
     Component.onCompleted: {
       //  console.log("mySentenceItems completed -----------------------------------------------------------------------------")
         Activity.onSentenceItemCompleted(mySentenceItems)
