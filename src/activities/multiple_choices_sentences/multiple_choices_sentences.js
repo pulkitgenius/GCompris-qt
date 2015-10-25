@@ -27,6 +27,7 @@ var currentSubLevel = 0
 var numberOfLevel
 var numberOfSubLevel
 var items
+var mySentenceItems
 var url
 var glowEnabled
 var glowEnabledDefault
@@ -55,8 +56,13 @@ function start(items_, url_, levelCount_, answerGlow_, displayDropCircle_) {
     initLevel()
 }
 
+function onSentenceItemCompleted(mySentenceItems_) {
+    mySentenceItems = mySentenceItems_
+}
+
+
 function stop() {
-    for(var i = 0 ; i < spots.length ; ++ i) 
+    for(var i = 0 ; i < spots.length ; ++ i)
         spots[i].destroy()
 }
 
@@ -65,16 +71,16 @@ function initLevel() {
     var filename = url + "board" + "/" + "board" + currentLevel + "_" + currentSubLevel + ".qml"
     items.dataset.source = filename
     var levelData = items.dataset.item
-    
+
     items.availablePieces.model.clear()
-    for(var i = 0 ; i < spots.length ; ++ i) 
+    for(var i = 0 ; i < spots.length ; ++ i)
         spots[i].destroy()
     spots = []
-    
-    for(var i = 0 ; i < showText.length ; ++ i) 
+
+    for(var i = 0 ; i < showText.length ; ++ i)
         showText[i].destroy()
     showText = []
-    
+
     items.backgroundPiecesModel.clear()
     items.backgroundImage.source = ""
 
@@ -90,18 +96,18 @@ function initLevel() {
     var textItemComponent = Qt.createComponent("qrc:/gcompris/src/activities/multiple_choices_sentences/TextItem.qml")
     var sentenceItemComponent = Qt.createComponent("qrc:/gcompris/src/activities/multiple_choices_sentences/SentenceItem.qml")
     //print(dropItemComponent.errorString())
-    
+
     if(currentSubLevel == 0 && levelData.numberOfSubLevel != undefined)
         numberOfSubLevel = levelData.numberOfSubLevel
-        
+
     items.score.currentSubLevel = currentSubLevel + 1
     items.score.numberOfSubLevels = numberOfSubLevel + 1
-    
+
     if(levelData.glow == undefined)
         glowEnabled = glowEnabledDefault
-    else 
+    else
         glowEnabled = levelData.glow
-    
+
     if(levelData.instruction == undefined) {
         items.instruction.opacity = 0
         items.instruction.text = ""
@@ -113,16 +119,16 @@ function initLevel() {
         items.instruction.opacity = 1
         items.instruction.text = levelData.instruction
     }
-	
+
     // Fill available pieces
     var arr=[], levelDataLength = levelData.levels.length
     for(var i=0 ; i < levelDataLength ; i++)
         arr[i] = i
-        
-    var i = 0, j = 0, k = 0, n = 0 
+
+    var i = 0, j = 0, k = 0, n = 0
     while(levelDataLength--) {
-        
-        //Randomize the order of pieces 
+
+        //Randomize the order of pieces
         var rand = Math.floor(Math.random() * levelDataLength)
         i = arr[rand]
         arr.splice(rand,1)
@@ -142,8 +148,8 @@ function initLevel() {
                                                        (levelData.levels[i].toolTipText.split('|').length > 1 ?
                                                         levelData.levels[i].toolTipText.split('|')[1] :
                                                         levelData.levels[i].toolTipText),
-                "pressSound": levelData.levels[i].soundFile == undefined ? 
-							  "qrc:/gcompris/src/core/resource/sounds/bleep.wav" : url + levelData.levels[i].soundFile
+                "pressSound": levelData.levels[i].soundFile == undefined ?
+                              "qrc:/gcompris/src/core/resource/sounds/bleep.wav" : url + levelData.levels[i].soundFile
             });
 
          /*   spots[j++] = dropItemComponent.createObject(
@@ -158,7 +164,7 @@ function initLevel() {
         }
         //Create Text pieces for the level which has to display additional information
         else if(levelData.levels[i].type == "DisplayText") {
-			showText[k++] = textItemComponent.createObject(
+            showText[k++] = textItemComponent.createObject(
                             items.backgroundImage, {
                                 "posX": levelData.levels[i].x,
                                 "posY": levelData.levels[i].y,
@@ -235,9 +241,10 @@ function initLevel() {
 
 
             sentenceItemComponent.createObject(
-                                items.backgroundImage, {
+                                mySentenceItems.myFlow1, {
                                     "sentenceSegments": sentenceSegments
                                 })
+
         }
 
         //Create static background pieces
@@ -251,12 +258,12 @@ function initLevel() {
                     "posX": levelData.levels[i].x,
                     "posY": levelData.levels[i].y,
                     "imgHeight": levelData.levels[i].height == undefined ? 0 : levelData.levels[i].height,
-                    "imgWidth": levelData.levels[i].width == undefined ? 0 : levelData.levels[i].width, 
+                    "imgWidth": levelData.levels[i].width == undefined ? 0 : levelData.levels[i].width,
                 });
             }
         }
     }
-    
+
     //Initialize displayedGroup variable which is used for showing navigation bars
     for(var i=0;i<items.availablePieces.view.nbDisplayedGroup;++i)
         items.availablePieces.view.displayedGroup[i] = true
@@ -275,7 +282,7 @@ function initLevel() {
 
 
 function nextSubLevel() {
-	if(numberOfSubLevel < ++currentSubLevel) {
+    if(numberOfSubLevel < ++currentSubLevel) {
         currentSubLevel = 0
         numberOfSubLevel = 0
         nextLevel()

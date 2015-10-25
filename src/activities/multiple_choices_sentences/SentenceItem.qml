@@ -23,9 +23,11 @@ import GCompris 1.0
 import "../../core"
 import "multiple_choices_sentences.js" as Activity
 
+import "componentCreation.js" as MyScript
+
 Item {
     id: displayText
-    
+
     property variant sentenceSegments
     property double backGroundWidth
     property double flowXPosition
@@ -34,6 +36,42 @@ Item {
     backGroundWidth: parent.width - x - 100
     flowXPosition: parent.width / 10
     flowYPosition: parent.height / 5
+
+
+    Component.onCompleted: {
+        console.log("mySentenceItems completed -----------------------------------------------------------------------------")
+        Activity.start(mySentenceItems)
+    }
+
+
+    // Add here the QML items you need to access in javascript
+    QtObject {
+        id: mySentenceItems
+
+        property alias myFlow1: myFlow1
+    }
+
+
+
+
+ /*   // Add here the QML items you need to access in javascript
+    QtObject {
+        id: items
+        property alias background: background
+        property alias bar: bar
+        property alias bonus: bonus
+        property alias availablePieces: availablePieces
+        property alias backgroundPiecesModel: backgroundPiecesModel
+        property alias file: file
+        property alias grid: grid
+        property alias backgroundImage: backgroundImage
+        property alias leftWidget: leftWidget
+        property alias instruction: instruction
+        property alias toolTip: toolTip
+        property alias score: score
+        property alias dataset: dataset
+    }    */
+
 
     Flow {
         id: myFlow1
