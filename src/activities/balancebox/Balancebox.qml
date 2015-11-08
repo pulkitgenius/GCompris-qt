@@ -138,6 +138,7 @@ ActivityBase {
             property alias parser: parser
             property double dpi
             property GCAudio audioEffects: activity.audioEffects
+            property Loading loading: activity.loading
         }
 
         Loader {
@@ -496,7 +497,7 @@ ActivityBase {
                     property alias levelsBox: levelsBox
 
                     property var availableLevels: [
-                        { "text": qsTr("Built in"), "value": "builtin" },
+                        { "text": qsTr("Built-in"), "value": "builtin" },
                         { "text": qsTr("User"), "value": "user" },
                     ]
 
@@ -515,7 +516,7 @@ ActivityBase {
                             id: editorButton
                             style:  GCButtonStyle {}
                             height: levelsBox.height
-                            text: "Start Editor"
+                            text: qsTr("Start Editor")
                             visible: levelsBox.currentIndex == 1
                             onClicked: background.startEditor()
                         }
@@ -547,9 +548,9 @@ ActivityBase {
                 if (newLevels === "user" &&
                         !parser.jsonFile.exists(Activity.userFile)) {
                     Core.showMessageDialog(dialogActivityConfig,
-                                           qsTr("You selected the user defined level set, but you have not yet defined any user levels!<br/> " +
-                                 "Either define your user levels by starting the level editor or choose the 'built in' level set."),
-                                  "Ok", null,
+                                           qsTr("You selected the user-defined level set, but you have not yet defined any user levels!<br/> " +
+                                 "Either create your user levels by starting the level editor or choose the 'built-in' level set."),
+                                  qsTr("Ok"), null,
                                   "", null,
                                   null);
                     return false;

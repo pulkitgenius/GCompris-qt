@@ -29,15 +29,14 @@ import "."
 
 Image {
     id: chooser
-    source: Activity.url + (activity.modeRGB ? "flashlight.svg" : "tube.svg")
     z: 1
 
     property int maxSteps: 10
     property int currentStep: 0
-    property alias hue: color.hue
+    property real hue
 
     Image {
-        id: intensity
+        id: intensityScreen
         source: Activity.url + "flashlight2.svg"
         sourceSize.height: parent.sourceSize.height
         z: 2
@@ -50,24 +49,26 @@ Image {
             lightness: -(maxSteps - currentStep) / maxSteps
             saturation: 1
         }
+    }
 
-        Image {
-            source: Activity.url + "light.svg"
-            sourceSize.height: parent.sourceSize.height / 2
-            anchors {
-                left: parent.right
-                leftMargin: -20 * ApplicationInfo.ratio
-                verticalCenter: parent.verticalCenter
-            }
-            opacity: currentStep / maxSteps
+    Image {
+        id: intensityLight
+        source: Activity.url + "light.svg"
+        sourceSize.height: intensityScreen.sourceSize.height / 2
+        visible: intensityScreen.visible
+        anchors {
+            left: intensityScreen.right
+            leftMargin: -20 * ApplicationInfo.ratio
+            verticalCenter: intensityScreen.verticalCenter
+        }
+        opacity: currentStep / maxSteps
 
-            Colorize {
-                anchors.fill: parent
-                source: parent
-                hue: chooser.hue
-                lightness: -(maxSteps - currentStep) / maxSteps
-                saturation: 1
-            }
+        Colorize {
+            anchors.fill: parent
+            source: parent
+            hue: chooser.hue
+            lightness: -(maxSteps - currentStep) / maxSteps
+            saturation: 1
         }
     }
 
@@ -93,16 +94,8 @@ Image {
         }
     }
 
-    Colorize {
-        id: color
-        anchors.fill: parent
-        source: parent
-        hue: 0.0
-        saturation: 1
-    }
-
     ColorButton {
-        text: "+"
+        source: Activity.url + "plus.svg"
         anchors {
             verticalCenter: parent.verticalCenter
             right: parent.right
@@ -111,7 +104,7 @@ Image {
     }
 
     ColorButton {
-        text: "-"
+        source: Activity.url + "minus.svg"
         anchors {
             verticalCenter: parent.verticalCenter
             left: parent.left
