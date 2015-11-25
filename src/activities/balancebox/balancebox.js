@@ -21,7 +21,6 @@
 
 /* ToDo:
   - make sensitivity configurable
-  - add rectangular fixture for goal
   - editor: add 'clear' button
   - editor: allow going back: level 1 -> last level
   - add new item: unordered contact, that has to be collected but in an
@@ -78,6 +77,7 @@ var ballContacts;
 var wallComponent = Qt.createComponent("qrc:/gcompris/src/activities/balancebox/Wall.qml");
 var contactComponent = Qt.createComponent("qrc:/gcompris/src/activities/balancebox/BalanceContact.qml");
 var balanceItemComponent = Qt.createComponent("qrc:/gcompris/src/activities/balancebox/BalanceItem.qml");
+var goalComponent = Qt.createComponent("qrc:/gcompris/src/activities/balancebox/Goal.qml");
 var contactIndex = -1;
 var pendingObjects = 0;
 var pendingReconfigure = false;
@@ -89,7 +89,9 @@ function start(items_) {
 
     if (items.mode === "play") {
         if (GCompris.ApplicationInfo.isMobile) {
-            // lock screen orientation
+            // we don't have many touch events, therefore disable screensaver on android:
+            GCompris.ApplicationInfo.setKeepScreenOn(true);
+            // lock screen orientation to landscape:
             GCompris.ApplicationInfo.setRequestedOrientation(0);
             if (GCompris.ApplicationInfo.getNativeOrientation() === Qt.PortraitOrientation) {
                 /*
@@ -182,7 +184,9 @@ function checkBallContacts()
             if (ballContacts[k].categories == items.holeType)
                 finishBall(false, ballContacts[k].x, ballContacts[k].y);
             else if (ballContacts[k].categories == items.goalType && goalUnlocked)
-                finishBall(true, ballContacts[k].x, ballContacts[k].y);
+                finishBall(true,
+                           ballContacts[k].x + (items.cellSize - items.wallSize - items.ballSize)/2,
+                           ballContacts[k].y + (items.cellSize - items.wallSize - items.ballSize)/2);
             else if (ballContacts[k].categories == items.buttonType) {
                 if (!ballContacts[k].pressed
                     && ballContacts[k].orderNum == lastContact + 1)
@@ -219,8 +223,10 @@ function stop() {
     // reset everything
     tearDown();
     // unlock screen orientation
-    if (GCompris.ApplicationInfo.isMobile)
+    if (GCompris.ApplicationInfo.isMobile) {
+        GCompris.ApplicationInfo.setKeepScreenOn(false);
         GCompris.ApplicationInfo.setRequestedOrientation(-1);
+    }
     // make sure loading overlay is really stopped
     items.loading.stop();
 }
@@ -342,7 +348,7 @@ function initMap()
             if (map[row][col] & GOAL) {
                 var goalX = col * items.cellSize + items.wallSize/2;
                 var goalY = row * items.cellSize + items.wallSize/2;
-                goal = createObject(balanceItemComponent, {
+                goal = createObject(goalComponent, {
                                         x: goalX,
                                         y: goalY,
                                         width: items.cellSize - items.wallSize,

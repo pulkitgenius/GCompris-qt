@@ -22,16 +22,18 @@
 #include "ApplicationSettings.h"
 #include "ApplicationInfo.h"
 
-#include <QtCore/qmath.h>
-#include <QtCore/QUrl>
-#include <QtCore/QUrlQuery>
-#include <QtGui/QGuiApplication>
-#include <QtGui/QScreen>
-#include <QtCore/QLocale>
+#include <qmath.h>
+#include <QUrl>
+#include <QUrlQuery>
+#include <QGuiApplication>
+#include <QScreen>
+#include <QLocale>
 
 #include <QSettings>
 #include <QStandardPaths>
 #include <QDebug>
+
+#include <QtQml>
 
 #define GC_DEFAULT_FONT "Andika-R.ttf"
 #define GC_DEFAULT_FONT_CAPITALIZATION 0 // Font.MixedCase

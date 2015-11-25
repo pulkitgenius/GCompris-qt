@@ -65,8 +65,9 @@ ActivityBase {
             property alias background: background
             property alias bar: bar
             property alias bonus: bonus
+            property int barHeightAddon: ApplicationSettings.isBarHidden ? 1 : 3
             property int cellSize: Math.min(background.width / (8 + 2),
-                                            background.height / (8 + 3))
+                                            background.height / (8 + barHeightAddon))
             property variant fen: activity.fen
             property bool twoPlayer: activity.twoPlayers
             property bool difficultyByLevel: activity.difficultyByLevel
@@ -81,6 +82,8 @@ ActivityBase {
             property bool gameOver
             property string message
             property alias trigComputerMove: trigComputerMove            
+
+            Behavior on cellSize { PropertyAnimation { easing.type: Easing.InOutQuad; duration: 1000 } }
         }
 
         onStart: { Activity.start(items) }
@@ -130,7 +133,8 @@ ActivityBase {
                     text: qsTr("Undo");
                     style: GCButtonStyle {}
                     onClicked: Activity.undo()
-                    opacity: items.history.length > 0 ? 1 : 0
+                    enabled: items.history.length > 0 ? 1 : 0
+                    opacity: enabled
                     Behavior on opacity {
                         PropertyAnimation {
                             easing.type: Easing.InQuad
@@ -146,7 +150,8 @@ ActivityBase {
                     text: qsTr("Redo");
                     style: GCButtonStyle {}
                     onClicked: Activity.redo()
-                    opacity: items.redo_stack.length > 0 ? 1 : 0
+                    enabled: items.redo_stack.length > 0 ? 1 : 0
+                    opacity: enabled
                     Behavior on opacity {
                         PropertyAnimation {
                             easing.type: Easing.InQuad
@@ -160,7 +165,8 @@ ActivityBase {
                     height: 30 * ApplicationInfo.ratio
                     text: qsTr("Swap");
                     style: GCButtonStyle {}
-                    opacity: items.twoPlayer
+                    enabled: items.twoPlayer
+                    opacity: enabled
                     onClicked: chessboard.swap()
                 }
             }

@@ -22,8 +22,7 @@
 #ifndef APPLICATIONSETTINGS_H
 #define APPLICATIONSETTINGS_H
 
-#include <qqml.h>
-#include <QtCore/QObject>
+#include <QObject>
 #include <QQmlEngine>
 #include <QUrl>
 #include <QtGlobal>
