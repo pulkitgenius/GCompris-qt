@@ -29,8 +29,8 @@ Rectangle {
     property string dropCircleColor: "pink"
     property string positionType
     property string text
- //   property double posX
- //   property double posY
+    property double posX
+    property double posY
     property double imgHeight
     property double imgWidth
     property int dropAreaSize
@@ -63,7 +63,7 @@ Rectangle {
         color: "white"
         styleColor: "black"
         z: 2
-        text: "essaiiiiiiiiiiii"
+        text: "......."
     }
 
 
@@ -72,11 +72,11 @@ Rectangle {
     color: Activity.displayDropCircle ? dropCircleColor : "transparent"
     border.color: dropCircle.color == "#000000" ? "transparent" : "red"*/
     
- //   x: posX * parent.width - width/2
- //   y: posY * parent.height - height/2
+    x: posX * parent.width - width/2
+    y: posY * parent.height - height/2
 
-    x: 100
-    y: 100
+//    x: 100
+//    y: 100
 
     Image {
         id: dropAreaImage

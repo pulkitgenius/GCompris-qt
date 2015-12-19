@@ -23,7 +23,7 @@ import GCompris 1.0
 import "../../core"
 import "multiple_choices_sentences.js" as Activity
 
-import "componentCreation.js" as MyScript
+//import "componentCreation.js" as MyScript
 
 Item {
     id: displayText
@@ -37,43 +37,9 @@ Item {
     flowXPosition: parent.width / 10
     flowYPosition: parent.height / 5
 
-    Component.onCompleted: {
-      //  console.log("mySentenceItems completed -----------------------------------------------------------------------------")
-        Activity.onSentenceItemCompleted(mySentenceItems)
-    }
 
-
-    // Add here the QML items you need to access in javascript
-    QtObject {
-        id: mySentenceItems
-
-        property alias myFlow1: myFlow1
-    }
-
-
-
-
- /*   // Add here the QML items you need to access in javascript
-    QtObject {
-        id: items
-        property alias background: background
-        property alias bar: bar
-        property alias bonus: bonus
-        property alias availablePieces: availablePieces
-        property alias backgroundPiecesModel: backgroundPiecesModel
-        property alias file: file
-        property alias grid: grid
-        property alias backgroundImage: backgroundImage
-        property alias leftWidget: leftWidget
-        property alias instruction: instruction
-        property alias toolTip: toolTip
-        property alias score: score
-        property alias dataset: dataset
-    }    */
-
-
-    Flow {
-        id: myFlow1
+ /*   Flow {
+        id: myFlow
 
         x: flowXPosition
         y: flowYPosition
@@ -86,11 +52,54 @@ Item {
 
             WordItem { text: modelData[1]}
 
-           /* WordItem { text: "---"}
-            WordItem { text: modelData[1]}
-            WordItem { text: "///"}*/
         }
-    }
+    }*/
+
+
+      Flow {
+          id: myFlow1
+          width: backGroundWidth
+          anchors.margins: 4
+          spacing: 20
+
+            WordItem { text: "Le"}
+            WordItem { text: "chat"}
+            WordItem { text: "ne"}
+
+            DropWordAnswerItem {
+
+                id: mydrop2
+
+                posX: 0.5
+                posY: 0.5
+                imgHeight: 1
+                imgWidth: 1
+                dropAreaSize: 50
+                imageName: "images/postpoint.svg"
+
+
+            }
+
+
+            WordItem { text: "pas"}
+            WordItem { text: "avec"}
+            WordItem { text: "la"}
+
+            DropWordAnswerItem {
+
+                id: mydrop3
+
+                posX: 1
+                posY: 1
+                imgHeight: 1
+                imgWidth: 1
+                dropAreaSize: 50
+                imageName: "images/postpoint.svg"
+
+
+            }
+        }
+
 }
 
 

@@ -185,7 +185,7 @@ function initLevel() {
         //3- then mutilple choices words : *COD|COI
         else if(levelData.levels[i].type == "MultipleChoiceSentence") {
             var sentenceWords = levelData.levels[i].sentence
-            console.log("sentenceWords " + sentenceWords)   //// to remove ++++++++++++++++++++++++++++++++++++++++
+            console.log("++++++++sentenceWords " + sentenceWords)   //// to remove ++++++++++++++++++++++++++++++++++++++++
 
 
 
@@ -241,9 +241,11 @@ function initLevel() {
 
 
             sentenceItemComponent.createObject(
-                                mySentenceItems.myFlow1, {
+                                items.backgroundImage, {
                                     "sentenceSegments": sentenceSegments
                                 })
+
+
 
         }
 

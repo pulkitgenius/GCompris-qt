@@ -232,6 +232,14 @@ ActivityBase {
             }
         }
 
+    /*    SentenceItem {
+            x: 200
+            y: 300
+
+        }*/
+
+
+
         Rectangle {
             id: instruction
             anchors.fill: instructionTxt
