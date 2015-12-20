@@ -95,7 +95,7 @@ function initLevel() {
     var dropItemComponent = Qt.createComponent("qrc:/gcompris/src/activities/multiple_choices_sentences/DropAnswerItem.qml")
     var textItemComponent = Qt.createComponent("qrc:/gcompris/src/activities/multiple_choices_sentences/TextItem.qml")
     var sentenceItemComponent = Qt.createComponent("qrc:/gcompris/src/activities/multiple_choices_sentences/SentenceItem.qml")
-    var wordItemComponent = Qt.createComponent("qrc:/gcompris/src/activities/multiple_choices_sentences/WordItem.qml")
+
 
     //print(dropItemComponent.errorString())
 
@@ -247,6 +247,8 @@ function initLevel() {
                                     "sentenceSegments": sentenceSegments
                                 })
 
+
+            var wordItemComponent = Qt.createComponent("qrc:/gcompris/src/activities/multiple_choices_sentences/WordItem.qml")
 
             wordItemComponent.createObject(
                                 sentenceItemComponent.myFlow1, {
