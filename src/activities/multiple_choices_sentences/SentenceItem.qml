@@ -32,6 +32,7 @@ Item {
     property double backGroundWidth
     property double flowXPosition
     property double flowYPosition
+    property alias myFlow1: myFlow1
 
     backGroundWidth: parent.width - x - 100
     flowXPosition: parent.width / 10
@@ -61,7 +62,7 @@ Item {
           width: backGroundWidth
           anchors.margins: 4
           spacing: 20
-
+            /*
             WordItem { text: "Le"}
             WordItem { text: "chat"}
             WordItem { text: "ne"}
@@ -98,6 +99,7 @@ Item {
 
 
             }
+            */         
         }
 
 }

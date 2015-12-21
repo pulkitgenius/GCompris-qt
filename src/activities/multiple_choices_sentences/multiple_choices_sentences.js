@@ -92,11 +92,10 @@ function initLevel() {
     items.availablePieces.view.showGlow = false
     items.availablePieces.view.ok.height = 0
 
-    var dropItemComponent = Qt.createComponent("qrc:/gcompris/src/activities/multiple_choices_sentences/DropAnswerItem.qml")
+    var dropItemComponent = Qt.createComponent("qrc:/gcompris/src/activities/multiple_choices_sentences/DropWordAnswerItem.qml")
     var textItemComponent = Qt.createComponent("qrc:/gcompris/src/activities/multiple_choices_sentences/TextItem.qml")
     var sentenceItemComponent = Qt.createComponent("qrc:/gcompris/src/activities/multiple_choices_sentences/SentenceItem.qml")
-
-
+    var wordItemComponent = Qt.createComponent("qrc:/gcompris/src/activities/multiple_choices_sentences/WordItem.qml")
     //print(dropItemComponent.errorString())
 
     if(currentSubLevel == 0 && levelData.numberOfSubLevel != undefined)
@@ -186,15 +185,16 @@ function initLevel() {
         //2- words to analyse: un écureuil
         //3- then mutilple choices words : *COD|COI
         else if(levelData.levels[i].type == "MultipleChoiceSentence") {
-            var sentenceWords = levelData.levels[i].sentence
-            console.log("++++++++sentenceWords " + sentenceWords)   //// to remove ++++++++++++++++++++++++++++++++++++++++
+            //var sentenceWords = levelData.levels[i].sentence
+            var str = levelData.levels[i].sentence
+            console.log("++++++++sentenceWords " + str)   //// to remove ++++++++++++++++++++++++++++++++++++++++
 
 
 
 
 
             var wordsToAnalyse
-            var str = "J’ai vu [un écureuil|*COD|COI], sur [un sapin|*CCL|CCM] en face de la maison.";
+            //var str = "J’ai vu [un écureuil|*COD|COI], sur [un sapin|*CCL|CCM] en face de la maison.";
             var sentenceSegmentIndex = 0
             var elementsBetweenBrackets = []
             var multipleChoicesElementsArray = [[]]
@@ -241,22 +241,25 @@ function initLevel() {
             //trace of multipleChoicesElementsArray
             console.log("multipleChoicesElementsArray " + multipleChoicesElementsArray)
 
-
-            sentenceItemComponent.createObject(
-                                items.backgroundImage, {
-                                    "sentenceSegments": sentenceSegments
+            var sentenceItem = sentenceItemComponent.createObject(
+                                    items.backgroundImage, {
+                                        "sentenceSegments": sentenceSegments
+                                    })
+            
+              wordItemComponent.createObject(
+                                sentenceItem.myFlow1, {
+                                    "text": "myuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu"
                                 })
-
-
-            var wordItemComponent = Qt.createComponent("qrc:/gcompris/src/activities/multiple_choices_sentences/WordItem.qml")
-
-            wordItemComponent.createObject(
-                                sentenceItemComponent.myFlow1, {
-                            "text": "myuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu"
+                                
+              dropItemComponent.createObject(
+                                sentenceItem.myFlow1, {
+                                    posX: 0.5,
+                                    posY: 0.5,
+                                    imgHeight: 1,
+                                    imgWidth: 1,
+                                    dropAreaSize: 50,
+                                    imageName: "images/postpoint.svg"
                                 })
-
-
-
         }
 
         //Create static background pieces
