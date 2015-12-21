@@ -40,7 +40,14 @@ var PLAIN_TEXT = 0
 var TEXT_TO_ANALYSE = 1
 var MULTI_CHOICES = 2
 
-var sentenceSegments = [[]]
+//var sentenceSegments = [[]]
+var sentenceSegments = [3]
+for(var i = 0 ; i < 3 ; ++ i)
+        sentenceSegments[i] = []
+        
+var sentenceItem = []
+var dropWordAnswerItem = []
+var wordItem = []
 
 function start(items_, url_, levelCount_, answerGlow_, displayDropCircle_) {
     items = items_
@@ -77,10 +84,18 @@ function initLevel() {
         spots[i].destroy()
     spots = []
 
-    for(var i = 0 ; i < showText.length ; ++ i)
-        showText[i].destroy()
-    showText = []
+    for(var i = 0 ; i < sentenceItem.length ; ++ i)
+        sentenceItem[i].destroy()
+    sentenceItem = [] 
 
+	for(var i = 0 ; i < dropWordAnswerItem.length ; ++ i)
+        dropWordAnswerItem[i].destroy()
+    dropWordAnswerItem = []
+   
+    for(var i = 0 ; i < wordItem.length ; ++ i)
+        wordItem[i].destroy()
+    wordItem = []  
+        
     items.backgroundPiecesModel.clear()
     items.backgroundImage.source = ""
 
@@ -126,7 +141,7 @@ function initLevel() {
     for(var i=0 ; i < levelDataLength ; i++)
         arr[i] = i
 
-    var i = 0, j = 0, k = 0, n = 0
+    var i = 0, j = 0, k = 0, n = 0, si = 0, di = 0, wi = 0
     while(levelDataLength--) {
 
         //Randomize the order of pieces
@@ -136,7 +151,7 @@ function initLevel() {
 
 
         //Create answer pieces
-        if(levelData.levels[i].type === undefined) {
+        /*if(levelData.levels[i].type === undefined) {
             items.availablePieces.model.append( {
                 "imgName": levelData.levels[i].pixmapfile,
                 "imgSound": levelData.levels[i].sound ? levelData.levels[i].sound : "",
@@ -162,9 +177,9 @@ function initLevel() {
                             "dropAreaSize": levelData.levels[i].dropAreaSize == undefined ? 15 : levelData.levels[i].dropAreaSize,
                             "imageName" : levelData.levels[i].pixmapfile
                          });*/
-        }
+        //}
         //Create Text pieces for the level which has to display additional information
-        else if(levelData.levels[i].type == "DisplayText") {
+        if(levelData.levels[i].type == "DisplayText") {
             showText[k++] = textItemComponent.createObject(
                             items.backgroundImage, {
                                 "posX": levelData.levels[i].x,
@@ -202,27 +217,29 @@ function initLevel() {
             var plainTextFirstCharPos = 0
 
             while ((elementsBetweenBrackets = re.exec(str)) != null) {
-                console.log("--------Group of words number: " + sentenceSegmentIndex + 1)
+                //console.log("--------Group of words number: " + sentenceSegmentIndex + 1)
 
                 // extract all the words before the multiple choices [wordsToAnalyse|xxx|yyy] to set them to plainText
-                console.log("match found at " + elementsBetweenBrackets.index)
+                //console.log("match found at " + elementsBetweenBrackets.index)
                 var plainText = str.substring(plainTextFirstCharPos, elementsBetweenBrackets.index);
-                console.log("plainText: " + plainText);
-                sentenceSegments.push([PLAIN_TEXT,plainText])
+                //console.log("plainText: " + plainText);
+                //sentenceSegments.push([PLAIN_TEXT,plainText])
+                sentenceSegments[PLAIN_TEXT].push(plainText)
 
                 // split the multiple choices [wordsToAnalyse|xxx|yyy] and set them in multipleChoicesElements array
                 var multipleChoicesElements = elementsBetweenBrackets[1].split("|")
 
                 // remove the first element of the set and set it to wordsToAnalyse
                 wordsToAnalyse = multipleChoicesElements.shift()
-                sentenceSegments.push([TEXT_TO_ANALYSE,wordsToAnalyse])
-                console.log("wordsToAnalyse: " + wordsToAnalyse)
+                //sentenceSegments.push([TEXT_TO_ANALYSE,wordsToAnalyse])
+                sentenceSegments[TEXT_TO_ANALYSE].push(wordsToAnalyse)
+                //console.log("wordsToAnalyse: " + wordsToAnalyse)
 
                 //push the multiple choices elements array (ex COD,COI,CCM,CCL) to the sub array multipleChoicesElementsArray
-                multipleChoicesElementsArray[sentenceSegmentIndex] = multipleChoicesElements
-                console.log("MultipleChoicesElements: " + multipleChoicesElements)
+                //multipleChoicesElementsArray[sentenceSegmentIndex] = multipleChoicesElements
+                //console.log("MultipleChoicesElements: " + multipleChoicesElements)
                 //sentenceSegments.push(MULTI_CHOICES,multipleChoicesElements)
-                sentenceSegments.push([MULTI_CHOICES,"...."])
+                sentenceSegments[MULTI_CHOICES].push("....")
 
                 //prepare the index of the begining of the next plain text
                 plainTextFirstCharPos = elementsBetweenBrackets.index + elementsBetweenBrackets[1].length + 2
@@ -241,29 +258,45 @@ function initLevel() {
             //trace of multipleChoicesElementsArray
             console.log("multipleChoicesElementsArray " + multipleChoicesElementsArray)
 
-            var sentenceItem = sentenceItemComponent.createObject(
+			sentenceItem[si++] = sentenceItemComponent.createObject(
                                     items.backgroundImage, {
                                         "sentenceSegments": sentenceSegments
                                     })
             
-              wordItemComponent.createObject(
-                                sentenceItem.myFlow1, {
-                                    "text": "myuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu"
-                                })
-                                
-              dropItemComponent.createObject(
-                                sentenceItem.myFlow1, {
-                                    posX: 0.5,
-                                    posY: 0.5,
-                                    imgHeight: 1,
-                                    imgWidth: 1,
-                                    dropAreaSize: 50,
-                                    imageName: "images/postpoint.svg"
-                                })
+            for (var l = 0 ; l < sentenceSegments[0].length; ++l) {
+				wordItem[wi++] = wordItemComponent.createObject(
+									sentenceItem[si-1].myFlow1, {
+										"text": sentenceSegments[0][l]
+									})
+									
+				dropWordAnswerItem[di++] = dropItemComponent.createObject(
+												sentenceItem[si-1].myFlow1, {
+													posX: 0.5,
+													posY: 0.5,
+													imgHeight: 1,
+													imgWidth: 1,
+													dropAreaSize: 50,
+													imageName: "images/postpoint.svg"
+												})
+												
+				items.availablePieces.model.append( {
+					"imgName": "images/light.svg",
+					"wordText": sentenceSegments[1][l],
+					"imgSound": "",
+					"imgHeight": 0.25,
+					"imgWidth": 0.25,
+					"toolTipText":"",
+					"pressSound": "qrc:/gcompris/src/core/resource/sounds/bleep.wav"
+				});
+			}
+			wordItem[wi++] = wordItemComponent.createObject(
+									sentenceItem[si-1].myFlow1, {
+										"text": sentenceSegments[3]
+									})
         }
 
         //Create static background pieces
-        else {
+        /*else {
             if(levelData.levels[i].type === "SHAPE_BACKGROUND_IMAGE") {
                 items.backgroundImage.source = url + levelData.levels[i].pixmapfile
             }
@@ -276,7 +309,7 @@ function initLevel() {
                     "imgWidth": levelData.levels[i].width == undefined ? 0 : levelData.levels[i].width,
                 });
             }
-        }
+        }*/
     }
 
     //Initialize displayedGroup variable which is used for showing navigation bars

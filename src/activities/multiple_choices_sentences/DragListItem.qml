@@ -40,6 +40,7 @@ Item {
     property QtObject answer: tileImage.parent
     property bool isInList: tileImage.parent == tile
     property bool selected: false
+    property string displayWordText: wordText
 
     signal pressed
 
@@ -159,7 +160,7 @@ Item {
         //        width: Math.min(implicitWidth, textWidth * displayText.parent.width)
         //        wrapMode: TextEdit.WordWrap
                 z: 2
-                text: "brrrr"
+                text: displayWordText
              /*   onHeightChanged: {
                     if(firstTime) {
                         displayTxtContainer.height = displayTxt.height * Math.ceil(displayTxt.implicitWidth / displayTxt.width)
