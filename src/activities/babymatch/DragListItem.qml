@@ -85,7 +85,7 @@ Item {
             width: smallWidth
             height: smallHeight
             fillMode: Image.PreserveAspectFit
-            source: Activity.url + imgName
+            source: Activity.imagesUrl + imgName
 
             property double smallWidth: Activity.glowEnabled ? widthInColumn * 1.1 : widthInColumn
             property double smallHeight: Activity.glowEnabled ? heightInColumn * 1.1 : heightInColumn
@@ -103,6 +103,16 @@ Item {
             property Item currentTargetSpot
             property bool pressedOnce
             property bool parentIsTile : parent == tile ? true : false
+
+            onFullWidthChanged: correctDroppedImageSize()
+            onFullHeightChanged: correctDroppedImageSize()
+
+            function correctDroppedImageSize() {
+                if(tileImage.dropStatus == 0 || tileImage.dropStatus == 1) {
+                    tileImage.width = tileImage.fullWidth
+                    tileImage.height = tileImage.fullHeight
+                }
+            }
 
             function imageRemove() {
                 dropStatus = -1
